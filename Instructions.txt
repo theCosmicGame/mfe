@@ -1,0 +1,66 @@
+PROJECT SPECIFIC VARIABLES
+==========================
+==========================
+
+
+** webpack.dev.js **
+--------------------
+- port
+- publicPath (don't forget to include trailing '/' in path)
+- ModuleFederationPlugin:
+    - name
+    - exposes (link within container/src/components/)
+
+
+** webpack.prod.js **
+---------------------
+- publicPath (links to AWS config)
+- ModuleFederationPlugin:
+    - name (for projects)
+    - exposes (same as webpack.dev config)
+    - (for CONTAINER) remotes:
+        - key = name used in project folder names (e.g. marketing or products)
+        - value (prefix to @) = "name" used in each project's ModuleFederationPlugin
+
+** app.js **
+------------
+- productionPrefix (for class name collisions)
+- change Route statements within the export history function
+
+** bootstrap.js **
+------------------
+- update querySelector
+
+** Container ProjectApp.js**
+----------------------------
+- update import statement around mount
+- subsequently, in the container app.js create a new routing tier for new app 
+
+** Component pages **
+---------------------
+- Copyright text
+- filler vs boilerplate material
+
+COPYING CONFIGURATION
+=====================
+1. Update package.json file for start and build scripts (copy from old project)
+2. npm install
+3. Copy config directory
+    - webpack.dev.js: update port, MFP name, MFP exposes module
+                        specify publicPath, don't forget trailing '/' !!
+    - webpack.prod.js: update publicPath, MFP name, MFP exposes module
+2. Copy public directory
+    - index.html: update root id
+3. Create new src directory
+    - copy App.js
+    - copy bootstrap.js
+    - copy index.js
+App.js:
+    - remove import statements for components from prior project
+    - change routing
+bootstrap.js
+    - change querySelector
+
+publicPath property of webpack.prod affects development too FYI
+turn the src attribute in the script tag of index.html to include '/' so our script gets loaded up relative to just the current domain
+a publicPath: '/' is fine for MONOLITHS but not for microfrontend apps
